@@ -70,7 +70,7 @@ def updateexpense(id):
     expense = Expense.query.filter_by(id=id).first()
     return render_template('updateexpense.html', expense=expense)
 
-@app.route("/edit", methods=['POST'])
+@app.route('/editexpense', methods=['POST'])
 def edit():
     id=request.form['id']
     date = request.form['date']
@@ -86,6 +86,16 @@ def edit():
 
     db.session.commit()
     return redirect('/expenses')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect('/expenses')
+    return render_template('login.html', error=error)
 
 
 if __name__ == '__main__':
